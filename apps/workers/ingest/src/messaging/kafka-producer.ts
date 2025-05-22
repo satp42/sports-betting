@@ -93,7 +93,7 @@ export class KafkaOddsProducer {
       });
 
       console.log(`✅ Successfully published ${messages.length} game updates to Kafka`);
-      console.log(`📊 Kafka response:`, {
+      console.log('📊 Kafka response:', {
         topicPartitions: result.map((r: any) => ({
           topic: r.topicName,
           partition: r.partition,

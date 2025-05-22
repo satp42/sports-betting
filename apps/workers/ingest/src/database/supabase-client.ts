@@ -37,7 +37,7 @@ export class SupabaseIngestor {
 
     console.log(`📤 Inserting ${games.length} games into database...`);
 
-    const { data, error } = await this.supabase
+    const { data: _data, error } = await this.supabase
       .from('games')
       .upsert(games, { 
         onConflict: 'id',
@@ -81,7 +81,7 @@ export class SupabaseIngestor {
     for (let i = 0; i < snapshots.length; i += batchSize) {
       const batch = snapshots.slice(i, i + batchSize);
       
-      const { data, error } = await this.supabase
+      const { data: _data, error } = await this.supabase
         .from('odds_snapshots')
         .insert(batch);
 
@@ -114,7 +114,7 @@ export class SupabaseIngestor {
 
   async healthCheck(): Promise<boolean> {
     try {
-      const { data, error } = await this.supabase
+      const { data: _data, error } = await this.supabase
         .from('games')
         .select('count')
         .limit(1);

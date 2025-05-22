@@ -56,9 +56,9 @@ async function startScheduler(): Promise<void> {
 
     console.log('✅ Cron scheduler started successfully');
     console.log('📊 Worker Status:');
-    console.log(`   • Schedule: Every 60 seconds`);
-    console.log(`   • Timezone: UTC`);
-    console.log(`   • Status: Running`);
+    console.log('   • Schedule: Every 60 seconds');
+    console.log('   • Timezone: UTC');
+    console.log('   • Status: Running');
 
   } catch (error) {
     console.error('❌ Failed to start ingest worker:', error);
