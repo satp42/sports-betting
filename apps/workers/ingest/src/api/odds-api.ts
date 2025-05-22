@@ -62,7 +62,7 @@ export class OddsApiClient {
       }
 
       return response.data;
-    } catch (error) {
+    } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         console.error('❌ Odds API Error:', {
           status: error.response?.status,

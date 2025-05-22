@@ -3,7 +3,7 @@ import cron from 'node-cron';
 import { IngestOrchestrator } from './ingest-orchestrator';
 
 // Load environment variables
-dotenv.config({ path: '../../.env' });
+dotenv.config({ path: '../../../.env' });
 
 console.log('🚀 NBA Betting Bot Workers starting...');
 console.log('📊 Configured APIs:', {
@@ -71,7 +71,7 @@ async function gracefulShutdown(signal: string): Promise<void> {
   
   // Stop the cron job
   if (cronJob) {
-    cronJob.destroy();
+    cronJob.stop();
     console.log('⏹️ Cron scheduler stopped');
   }
 
