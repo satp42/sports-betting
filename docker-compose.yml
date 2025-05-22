@@ -66,5 +66,28 @@ services:
       retries: 3
       start_period: 30s
 
+  ingest-worker:
+    build:
+      context: ./apps/workers/ingest
+      dockerfile: Dockerfile
+    container_name: sports-betting-ingest-worker
+    depends_on:
+      - postgres
+      - kafka
+    environment:
+      - THE_ODDS_API_KEY=${THE_ODDS_API_KEY}
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY}
+      - KAFKA_BROKERS=kafka:9092
+    restart: unless-stopped
+    volumes:
+      - ./apps/workers/ingest/src:/app/src:ro
+    healthcheck:
+      test: ["CMD", "pgrep", "-f", "node"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
 volumes:
   postgres_data: 
