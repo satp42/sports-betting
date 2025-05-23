@@ -68,9 +68,13 @@ export class IngestOrchestrator {
       console.log('💾 Inserting data into Supabase...');
       await this.supabaseIngestor.insertOddsData(normalizedRecords);
 
-      // 5. Publish to Kafka
-      console.log('📤 Publishing to Kafka...');
-      await this.kafkaProducer.publishOddsUpdates(normalizedRecords);
+      // 5. Publish to Kafka (optional)
+      if (process.env.ENABLE_KAFKA !== 'false') {
+        console.log('📤 Publishing to Kafka...');
+        await this.kafkaProducer.publishOddsUpdates(normalizedRecords);
+      } else {
+        console.log('⏭️  Kafka publishing disabled');
+      }
 
       const duration = Date.now() - startTime;
       console.log(`🎯 Ingestion cycle completed successfully in ${duration}ms`);
@@ -86,7 +90,9 @@ export class IngestOrchestrator {
   async shutdown(): Promise<void> {
     console.log('🛑 Shutting down ingest orchestrator...');
     try {
-      await this.kafkaProducer.disconnect();
+      if (process.env.ENABLE_KAFKA !== 'false') {
+        await this.kafkaProducer.disconnect();
+      }
       console.log('✅ Ingest orchestrator shut down successfully');
     } catch (error) {
       console.error('❌ Error during shutdown:', error);

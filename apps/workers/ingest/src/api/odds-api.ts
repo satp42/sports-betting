@@ -53,8 +53,21 @@ export class OddsApiClient {
       });
 
       console.log(`✅ Successfully fetched ${response.data.length} games`);
-      console.log(`📈 API calls remaining: ${response.headers['x-requests-remaining']}`);
-      console.log(`🔄 Next reset: ${new Date(response.headers['x-requests-reset'] * 1000).toISOString()}`);
+      
+      // Safely log API rate limit info
+      const requestsRemaining = response.headers['x-requests-remaining'];
+      const requestsReset = response.headers['x-requests-reset'];
+      
+      if (requestsRemaining) {
+        console.log(`📈 API calls remaining: ${requestsRemaining}`);
+      }
+      
+      if (requestsReset && !isNaN(Number(requestsReset))) {
+        const resetDate = new Date(Number(requestsReset) * 1000);
+        if (!isNaN(resetDate.getTime())) {
+          console.log(`🔄 Next reset: ${resetDate.toISOString()}`);
+        }
+      }
       
       // Log sample response for debugging
       if (response.data.length > 0) {
